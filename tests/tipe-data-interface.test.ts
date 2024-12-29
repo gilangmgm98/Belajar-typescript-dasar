@@ -1,5 +1,6 @@
 import { Seller } from "../src/tipe-data-interface";
 import { Employee, Manager } from "../src/extendable-interface";
+import { Person } from "../src/person";
 
 describe('Interfaces', () => {
     it('should implement a custom interface', () => {
@@ -15,7 +16,7 @@ describe('Interfaces', () => {
         // seller.nib = '123213131'; //Tidak bisa merubah value karena properies readonly
 
 
-        console.info(seller)
+        // console.info(seller)
     })
 
     it('should implement a function interface', () => {
@@ -31,8 +32,8 @@ describe('Interfaces', () => {
             return price * quantity;
         }
 
-        console.log(calculate(5, 10));
-        console.log(calculateTotalPrice(10000, 5));
+        // console.log(calculate(5, 10));
+        // console.log(calculateTotalPrice(10000, 5));
 
         expect(calculate(5, 10)).toBe(15)
         expect(calculateTotalPrice(10, 5)).toBe(50)
@@ -46,7 +47,7 @@ describe('Interfaces', () => {
         }
 
         const name: stringArray = ['Muhammad', 'Gilang', 'Murdiyanto']
-        console.log(name)
+        // console.log(name)
 
         expect(name[0]).toBe('Muhammad')
         expect(name[2]).toBe('Murdiyanto')
@@ -71,7 +72,7 @@ describe('Interfaces', () => {
             address: 'Jakarta'
         }
 
-        console.log(person)
+        // console.log(person)
 
         expect(person.id).toBe('1')
         expect(person.name).toBe('Gilang')
@@ -112,11 +113,11 @@ describe('Interfaces', () => {
     it('should implement function in interface', () => {
         // implementasi function / method dalam interface
 
-        interface Person {
-            name: string;
-            age: number;
-            greet(name: string): string;
-        }
+        // interface Person {
+        //     name: string;
+        //     age: number;
+        //     greet(name: string): string;
+        // }
 
         const person: Person = {
             name: 'Gilang',
@@ -143,9 +144,9 @@ describe('Interfaces', () => {
         }
 
 
-        console.info(person.greet("Alpha"));
-        console.info(person2.greet('Beta'))
-        console.info(person3.greet('Cadast'));
+        // console.info(person.greet("Alpha"));
+        // console.info(person2.greet('Beta'))
+        // console.info(person3.greet('Cadast'));
 
         expect(person.greet("Alpha")).toBe("Halo, Alpha! Saya Gilang dan saya 26 tahun.")
         expect(person2.greet('Beta')).toBe("Halo, Beta! Saya Ahmad dan saya 22 tahun.")
@@ -168,8 +169,42 @@ describe('Interfaces', () => {
             age: 26
         }
 
-        console.info(person)
+        // console.info(person)
         expect(person.name).toBe('Gilang')
         expect(person.age).toBe(26)
+    })
+
+    it('should support assertions', () => {
+        const person: any = {
+            name: 'Gilang',
+            DateOfBirth: '29 Nov 1998'
+        }
+
+        const person2: Person = person as Person
+
+        // console.info(person2)
+        expect(person2.name).toBe('Gilang')
+        // expect(person2.DateOfBirth).toBe('29 Nov 1998')
+
+        // tidak direkomendasikan karena masih harus memastikan isi dan props dari variable teresebut sebab ketika di konversi tidak akan menampilkan error kecuali saat aplikasi berjalan
+        // console.log(person2.age) // error: Property 'age' does not exist on type 'Person'.
+    })
+
+    it('should support function overloading', () => {
+        function greet(name: string): string;
+        function greet(name: string, age: number): string;
+
+        function greet(name: any, age?: number): string {
+            if (typeof name ==='string' && age) {
+                return `Halo, ${name}! Saya ${age} tahun.`
+            } else if (typeof name ==='string') {
+                return `Halo, ${name}! Saya seorang orang.`
+            } else {
+                throw new Error('Invalid input')
+            }
+        }
+
+        expect(greet('Gilang')).toBe('Halo, Gilang! Saya seorang orang.')
+        expect(greet('Gilang', 26)).toBe('Halo, Gilang! Saya 26 tahun.')
     })
 })
